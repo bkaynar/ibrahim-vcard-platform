@@ -667,10 +667,51 @@ onMounted(() => {
                             </button>
                         </div>
                     </div>
+                    <!-- Company Modal -->
+                    <transition name="modal">
+                        <div v-if="showCompanyModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 animate-fadeIn overflow-y-auto">
+                            <div class="fixed inset-0 bg-black/60 backdrop-blur-sm" @click="closeCompanyModal"></div>
+                            <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl overflow-hidden max-w-md w-full z-10 transform animate-scaleIn border border-gray-200 dark:border-gray-700">
+                                <div class="p-6">
+                                    <div class="flex justify-between items-center mb-4">
+                                        <h3 class="text-2xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
+                                            Firma Bilgisi
+                                        </h3>
+                                        <button @click="closeCompanyModal" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-xl transition-colors">
+                                            <X class="w-6 h-6 text-gray-500 dark:text-gray-400" />
+                                        </button>
+                                    </div>
+
+                                    <div v-if="props.user.company_info" class="space-y-3 text-sm text-gray-700 dark:text-gray-300">
+                                        <div>
+                                            <div class="text-xs text-gray-500 dark:text-gray-400">Firma Adı</div>
+                                            <div class="font-semibold">{{ props.user.company_info.company_name || '-' }}</div>
+                                        </div>
+                                        <div>
+                                            <div class="text-xs text-gray-500 dark:text-gray-400">Unvan</div>
+                                            <div class="font-semibold">{{ props.user.company_info.company_title || '-' }}</div>
+                                        </div>
+                                        <div>
+                                            <div class="text-xs text-gray-500 dark:text-gray-400">Vergi Dairesi</div>
+                                            <div class="font-semibold">{{ props.user.company_info.tax_office || '-' }}</div>
+                                        </div>
+                                        <div>
+                                            <div class="text-xs text-gray-500 dark:text-gray-400">Vergi No</div>
+                                            <div class="font-semibold">{{ props.user.company_info.tax_number || '-' }}</div>
+                                        </div>
+                                        <div>
+                                            <div class="text-xs text-gray-500 dark:text-gray-400">Adres</div>
+                                            <div class="font-semibold break-words">{{ props.user.company_info.company_address || '-' }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </transition>
 
                     <!-- QR Code Modal -->
                     <transition name="modal">
-                        <div v-if="showQrModal" class="fixed inset-0 z-50 flex items-start justify-center p-4 pt-20 animate-fadeIn overflow-y-auto">
+                        <div v-if="showQrModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 animate-fadeIn overflow-y-auto">
                             <div class="fixed inset-0 bg-black/60 backdrop-blur-sm" @click="closeQrModal"></div>
                             <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl overflow-hidden max-w-md w-full z-10 transform animate-scaleIn border border-gray-200 dark:border-gray-700">
                                 <div class="p-8">
