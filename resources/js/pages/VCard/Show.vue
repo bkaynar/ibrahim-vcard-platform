@@ -497,8 +497,8 @@ onMounted(() => {
             <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-3xl shadow-2xl overflow-hidden border border-gray-100 dark:border-gray-700/50 hover:shadow-3xl transition-all duration-300">
                 <!-- Cover Photo -->
                 <div class="h-48 sm:h-56 bg-gray-200 dark:bg-gray-700 relative overflow-hidden">
-                    <img v-if="props.user.cover_photo_url" :src="props.user.cover_photo_url"
-                        class="w-full h-full object-cover" :alt="`${props.user.name} kapak fotoğrafı`">
+                    <img src="/main/adana.jpeg"
+                        class="w-full h-full object-fill" alt="Kapak fotoğrafı">
                 </div>
 
                 <!-- Profile Section -->
