@@ -336,6 +336,18 @@ const closeCompanyModal = () => {
     showCompanyModal.value = false;
 };
 
+// Bank modal
+const showBankModal = ref(false);
+const selectedBank = ref<any>(null);
+const openBankModal = (account: any) => {
+    selectedBank.value = account;
+    showBankModal.value = true;
+};
+const closeBankModal = () => {
+    showBankModal.value = false;
+    selectedBank.value = null;
+};
+
 // Documents modal
 const showDocumentsModal = ref(false);
 const openDocumentsModal = () => {
@@ -498,7 +510,7 @@ onMounted(() => {
                 <!-- Cover Photo -->
                 <div class="h-59 sm:h-93 bg-gray-200 dark:bg-gray-700 relative overflow-hidden">
                     <img src="/main/adana.jpeg"
-                        class="w-full h-full object-fill" alt="Kapak fotoğrafı">
+                        class="w-full h-full object-fillK" alt="Kapak fotoğrafı">
                 </div>
 
                 <!-- Profile Section -->
@@ -609,7 +621,7 @@ onMounted(() => {
                             <!-- Banka Bilgisi İkonları (pivot'tan gelen userBanks) -->
                             <template v-if="props.user.userBanks && props.user.userBanks.length > 0">
                                 <template v-for="(account, idx) in props.user.userBanks" :key="`bank-${idx}`">
-                                    <button v-if="account && account.iban" @click="copyIban(account.iban)"
+                                    <button v-if="account && account.iban" @click="openBankModal(account)"
                                         class="group flex flex-col items-center p-4 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800/50 dark:to-gray-700/50 rounded-2xl hover:shadow-lg transition-all duration-300 hover:scale-110 border border-gray-200 dark:border-gray-600/30">
                                         <div class="flex flex-col items-center">
                                             <div class="flex items-center justify-center p-0 rounded-xl transition-all duration-300">
@@ -624,7 +636,7 @@ onMounted(() => {
                                             </div>
                                             <div class="mt-2 text-center">
                                                 <div class="text-xs text-gray-700 dark:text-gray-300 font-semibold">{{ account.bank_name }}</div>
-                                                <div class="text-xs text-gray-500 dark:text-gray-400 break-all">{{ copiedIban === account.iban ? 'Kopyalandı!' : 'IBAN' }}</div>
+                                                <div class="text-xs text-gray-500 dark:text-gray-400 break-all">IBAN</div>
                                             </div>
                                         </div>
                                     </button>
@@ -633,22 +645,19 @@ onMounted(() => {
                             <template v-else>
                                 <!-- Geriye dönük: tekil bank_info varsa göster -->
                                 <button v-if="props.user.bank_info && props.user.bank_info.iban"
-                                    @click="copyIban(props.user.bank_info.iban)"
+                                    @click="openBankModal(props.user.bank_info)"
                                     class="group flex flex-col items-center p-4 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800/50 dark:to-gray-700/50 rounded-2xl hover:shadow-lg transition-all duration-300 hover:scale-110 border border-gray-200 dark:border-gray-600/30">
                                     <div class="flex flex-col items-center">
                                         <div class="flex items-center justify-center p-0 rounded-xl transition-all duration-300">
-                                            <template v-if="props.user.bank_info.bank_logo_url">
-                                                <img :src="props.user.bank_info.bank_logo_url" :alt="props.user.bank_info.bank_name" class="w-8 h-8 object-contain mx-auto">
-                                            </template>
-                                            <template v-else>
+                                            <template v-if="props.user.bank_info.bank_name">
                                                 <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
                                                     <span class="text-sm font-semibold text-gray-700">{{ getBankInitials(props.user.bank_info.bank_name) }}</span>
                                                 </div>
                                             </template>
                                         </div>
                                         <div class="mt-2 text-center">
-                                            <div class="text-xs text-gray-700 dark:text-gray-300 font-semibold">{{ props.user.bank_info.bank_name }}</div>
-                                            <div class="text-xs text-gray-500 dark:text-gray-400 break-all">{{ copiedIban === props.user.bank_info.iban ? 'Kopyalandı!' : props.user.bank_info.iban }}</div>
+                                            <div class="text-xs text-gray-700 dark:text-gray-300 font-semibold">{{ props.user.bank_info.bank_name || 'Banka' }}</div>
+                                            <div class="text-xs text-gray-500 dark:text-gray-400 break-all">IBAN</div>
                                         </div>
                                     </div>
                                 </button>
@@ -709,6 +718,63 @@ onMounted(() => {
                         </div>
                     </transition>
 
+                    <!-- Bank Modal -->
+                    <transition name="modal">
+                        <div v-if="showBankModal && selectedBank" class="fixed inset-0 z-50 flex items-center justify-center p-4 animate-fadeIn overflow-y-auto">
+                            <div class="fixed inset-0 bg-black/60 backdrop-blur-sm" @click="closeBankModal"></div>
+                            <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl overflow-hidden max-w-md w-full z-10 transform animate-scaleIn border border-gray-200 dark:border-gray-700">
+                                <div class="p-6">
+                                    <div class="flex justify-between items-center mb-4">
+                                        <h3 class="text-2xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
+                                            Banka Bilgisi
+                                        </h3>
+                                        <button @click="closeBankModal" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-xl transition-colors">
+                                            <X class="w-6 h-6 text-gray-500 dark:text-gray-400" />
+                                        </button>
+                                    </div>
+
+                                    <div class="space-y-4 text-sm text-gray-700 dark:text-gray-300">
+                                        <!-- Banka Logosu -->
+                                        <div v-if="selectedBank.bank_logo_url" class="flex justify-center mb-4">
+                                            <img :src="selectedBank.bank_logo_url" :alt="selectedBank.bank_name" class="w-20 h-20 object-contain">
+                                        </div>
+
+                                        <!-- Banka Adı -->
+                                        <div>
+                                            <div class="text-xs text-gray-500 dark:text-gray-400">Banka Adı</div>
+                                            <div class="font-semibold">{{ selectedBank.bank_name || '-' }}</div>
+                                        </div>
+
+                                        <!-- IBAN -->
+                                        <div>
+                                            <div class="text-xs text-gray-500 dark:text-gray-400 mb-1">IBAN</div>
+                                            <div class="flex items-center justify-between bg-gray-50 dark:bg-gray-700/50 rounded-xl p-3 border border-gray-200 dark:border-gray-600">
+                                                <div class="font-mono text-sm break-all">{{ selectedBank.iban || '-' }}</div>
+                                                <button v-if="selectedBank.iban" @click="copyIban(selectedBank.iban)"
+                                                    class="ml-2 p-2 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors flex-shrink-0">
+                                                    <Check v-if="copiedIban === selectedBank.iban" class="w-4 h-4 text-green-600" />
+                                                    <Copy v-else class="w-4 h-4 text-gray-600 dark:text-gray-400" />
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <!-- Hesap Sahibi -->
+                                        <div v-if="selectedBank.account_holder">
+                                            <div class="text-xs text-gray-500 dark:text-gray-400">Hesap Sahibi</div>
+                                            <div class="font-semibold">{{ selectedBank.account_holder }}</div>
+                                        </div>
+
+                                        <!-- Şube -->
+                                        <div v-if="selectedBank.branch || selectedBank.bank_branch">
+                                            <div class="text-xs text-gray-500 dark:text-gray-400">Şube</div>
+                                            <div class="font-semibold">{{ selectedBank.branch || selectedBank.bank_branch || '-' }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </transition>
+
                     <!-- QR Code Modal -->
                     <transition name="modal">
                         <div v-if="showQrModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 animate-fadeIn overflow-y-auto">
@@ -747,6 +813,48 @@ onMounted(() => {
                                             <Download class="w-5 h-5 mr-2" />
                                             VCard'ı İndir
                                         </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </transition>
+
+                    <!-- Documents Modal -->
+                    <transition name="modal">
+                        <div v-if="showDocumentsModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 animate-fadeIn overflow-y-auto">
+                            <div class="fixed inset-0 bg-black/60 backdrop-blur-sm" @click="closeDocumentsModal"></div>
+                            <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl overflow-hidden max-w-md w-full z-10 transform animate-scaleIn border border-gray-200 dark:border-gray-700">
+                                <div class="p-6">
+                                    <div class="flex justify-between items-center mb-4">
+                                        <h3 class="text-2xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
+                                            Dökümanlar
+                                        </h3>
+                                        <button @click="closeDocumentsModal" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-xl transition-colors">
+                                            <X class="w-6 h-6 text-gray-500 dark:text-gray-400" />
+                                        </button>
+                                    </div>
+
+                                    <div v-if="props.user.documents && props.user.documents.length > 0" class="space-y-3">
+                                        <div v-for="(doc, index) in props.user.documents" :key="index"
+                                            class="flex items-center justify-between p-4 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-700/50 dark:to-gray-800/50 rounded-xl border border-gray-200 dark:border-gray-600 hover:shadow-md transition-all duration-300">
+                                            <div class="flex items-center space-x-3 flex-1">
+                                                <div class="p-2 bg-gradient-to-r from-orange-500 to-red-600 rounded-lg">
+                                                    <FileText class="w-5 h-5 text-white" />
+                                                </div>
+                                                <div class="flex-1 min-w-0">
+                                                    <div class="font-semibold text-gray-900 dark:text-white truncate">{{ doc.title }}</div>
+                                                    <div class="text-xs text-gray-500 dark:text-gray-400">Döküman</div>
+                                                </div>
+                                            </div>
+                                            <a v-if="doc.file_url" :href="doc.file_url" target="_blank"
+                                                class="ml-2 p-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors flex-shrink-0">
+                                                <Download class="w-4 h-4" />
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    <div v-else class="text-center text-gray-500 dark:text-gray-400 py-8">
+                                        Henüz döküman eklenmemiş
                                     </div>
                                 </div>
                             </div>
