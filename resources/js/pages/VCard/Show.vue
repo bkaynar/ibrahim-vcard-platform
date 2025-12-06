@@ -41,6 +41,7 @@ const props = defineProps<{
         id: number;
         name: string;
         username: string;
+        registration_number?: string;
         email: string;
         phone?: string;
         address?: string;
@@ -531,7 +532,7 @@ onMounted(() => {
                         <h1 class="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent mb-3">
                             {{ props.user.name }}
                         </h1>
-                        <p class="text-blue-600 dark:text-blue-400 text-lg font-medium mb-4">@{{ props.user.username }}</p>
+                        <p v-if="props.user.registration_number" class="text-blue-600 dark:text-blue-400 text-lg font-medium mb-4">Sicil No: {{ props.user.registration_number }}</p>
                         <p v-if="props.user.bio" class="text-gray-600 dark:text-gray-300 mt-5 leading-relaxed max-w-2xl mx-auto text-base">
                             {{ props.user.bio }}
                         </p>

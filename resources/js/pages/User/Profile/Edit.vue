@@ -388,27 +388,13 @@ const submit = () => {
 
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                        Kullanıcı Adı *
-                                    </label>
-                                    <input v-model="form.username" type="text" required disabled
-                                        class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 cursor-not-allowed">
-                                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                                        Kullanıcı adı değiştirilemez
-                                    </p>
-                                    <div v-if="form.errors.username" class="text-red-500 text-sm mt-1">{{
-                                        form.errors.username
-                                        }}</div>
-                                </div>
-
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                         Sicil Numarası
                                     </label>
-                                    <input v-model="form.registration_number" type="text"
-                                        class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-800 dark:text-white"
+                                    <input v-model="form.registration_number" type="text" readonly
+                                        class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 cursor-not-allowed"
                                         placeholder="Örn: 12345">
                                     <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                                        Profil URL'iniz: /{{ form.registration_number || 'sicil-numarasi' }}
+                                        Sicil numarası değiştirilemez
                                     </p>
                                     <div v-if="form.errors.registration_number" class="text-red-500 text-sm mt-1">{{
                                         form.errors.registration_number

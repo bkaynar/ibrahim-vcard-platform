@@ -27,6 +27,7 @@ class VCardController extends Controller
                 'id' => $user->id,
                 'name' => $user->name,
                 'username' => $user->username,
+                'registration_number' => $user->registration_number,
                 'email' => $user->email,
                 'phone' => $user->phone,
                 'address' => $user->address,
