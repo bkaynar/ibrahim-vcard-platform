@@ -113,7 +113,6 @@ const form = useForm({
     address: props.user.address || '',
     bio: props.user.bio || '',
     profile_photo: null as File | null,
-    cover_photo: null as File | null,
     socials: existingSocials.value,
     company_info: props.user.company_info || { company_name: '', company_title: '', tax_office: '', tax_number: '', company_address: '' },
     bank_accounts: props.userBanks || [],
@@ -122,11 +121,9 @@ const form = useForm({
 
 // Refs for file inputs
 const profilePhotoInput = ref<HTMLInputElement>();
-const coverPhotoInput = ref<HTMLInputElement>();
 
 // Preview URLs
 const profilePhotoPreview = ref<string | null>(null);
-const coverPhotoPreview = ref<string | null>(null);
 
 // Sosyal medya yönetimi
 const addSocialMedia = () => {
@@ -208,10 +205,6 @@ const selectProfilePhoto = () => {
     profilePhotoInput.value?.click();
 };
 
-const selectCoverPhoto = () => {
-    coverPhotoInput.value?.click();
-};
-
 const handleProfilePhotoChange = (event: Event) => {
     const target = event.target as HTMLInputElement;
     const file = target.files?.[0];
@@ -225,32 +218,11 @@ const handleProfilePhotoChange = (event: Event) => {
     }
 };
 
-const handleCoverPhotoChange = (event: Event) => {
-    const target = event.target as HTMLInputElement;
-    const file = target.files?.[0];
-    if (file) {
-        form.cover_photo = file;
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            coverPhotoPreview.value = e.target?.result as string;
-        };
-        reader.readAsDataURL(file);
-    }
-};
-
 const removeProfilePhoto = () => {
     form.profile_photo = null;
     profilePhotoPreview.value = null;
     if (profilePhotoInput.value) {
         profilePhotoInput.value.value = '';
-    }
-};
-
-const removeCoverPhoto = () => {
-    form.cover_photo = null;
-    coverPhotoPreview.value = null;
-    if (coverPhotoInput.value) {
-        coverPhotoInput.value.value = '';
     }
 };
 
@@ -315,26 +287,8 @@ const submit = () => {
                         <div
                             class="bg-white dark:bg-gray-900 rounded-xl shadow border border-gray-200 dark:border-gray-700 overflow-hidden">
                             <div class="relative h-48 bg-gradient-to-r from-blue-500 to-purple-600">
-                                <img v-if="coverPhotoPreview || props.user.cover_photo_url"
-                                    :src="coverPhotoPreview || props.user.cover_photo_url"
+                                <img src="/main/adana.jpeg"
                                     class="w-full h-full object-cover" alt="Kapak fotoğrafı">
-
-                                <!-- Cover Photo Controls -->
-                                <div
-                                    class="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
-                                    <div class="flex space-x-3">
-                                        <button type="button" @click="selectCoverPhoto"
-                                            class="px-4 py-2 bg-white bg-opacity-90 text-gray-800 rounded-lg hover:bg-opacity-100 transition-all flex items-center space-x-2">
-                                            <Upload class="w-4 h-4" />
-                                            <span>Kapak Değiştir</span>
-                                        </button>
-                                        <button v-if="coverPhotoPreview" type="button" @click="removeCoverPhoto"
-                                            class="px-4 py-2 bg-red-500 bg-opacity-90 text-white rounded-lg hover:bg-opacity-100 transition-all flex items-center space-x-2">
-                                            <X class="w-4 h-4" />
-                                            <span>Kaldır</span>
-                                        </button>
-                                    </div>
-                                </div>
                             </div>
 
                             <!-- Profile Photo Section -->
@@ -791,8 +745,6 @@ const submit = () => {
                         <!-- Hidden File Inputs -->
                         <input ref="profilePhotoInput" type="file" class="hidden" accept="image/*"
                             @change="handleProfilePhotoChange">
-                        <input ref="coverPhotoInput" type="file" class="hidden" accept="image/*"
-                            @change="handleCoverPhotoChange">
                     </form>
                 </div>
 
