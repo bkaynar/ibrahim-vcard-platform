@@ -65,6 +65,20 @@ const formatTel = (raw?: string | null) => {
     return `+90${digits}`;
 };
 
+/**
+ * Kullanıcı adını gösterim için normalize eder.
+ * Eğer isim zaten "Av" veya "Av." ile başlıyorsa tekrar eklemez.
+ */
+const formatDisplayName = (raw?: string | null) => {
+    if (!raw) return '';
+    let name = String(raw).trim();
+    // Başında birden fazla "Av" veya "Av." varsa temizle
+    while (/^av\.?\s+/i.test(name)) {
+        name = name.replace(/^av\.?\s+/i, '').trim();
+    }
+    return `Av. ${name}`;
+};
+
 // Props
 const props = defineProps<{
     user: {
@@ -532,26 +546,22 @@ onMounted(() => {
 
 <template>
 
-    <Head :title="`${props.user.name}`" />
+    <Head :title="formatDisplayName(props.user.name)" />
 
     <div class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-gray-950 dark:via-gray-900 dark:to-slate-900">
         <div class="max-w-3xl mx-auto py-6 sm:py-12 px-4">
             <!-- VCard -->
             <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-3xl shadow-2xl overflow-hidden border border-gray-100 dark:border-gray-700/50 hover:shadow-3xl transition-all duration-300">
-                <!-- Cover Photo -->
-                <div class="h-59 sm:h-93 bg-gray-200 dark:bg-gray-700 relative overflow-hidden">
-                    <img src="/main/adana.jpeg"
-                        class="w-full h-full object-fillK" alt="Kapak fotoğrafı">
-                </div>
+                <!-- Cover Photo removed per design -->
 
                 <!-- Profile Section -->
                 <div class="relative px-6 sm:px-10 pb-10">
                     <!-- Profile Photo -->
-                    <div class="flex justify-center -mt-20 mb-6">
+                    <div class="flex justify-center mb-12 mt-12 ">
                         <div class="relative group">
                             <div class="absolute -inset-1 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full blur opacity-75 group-hover:opacity-100 transition duration-300"></div>
                             <div class="relative w-36 h-36 sm:w-40 sm:h-40 rounded-full border-4 border-white dark:border-gray-800 overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800 shadow-xl">
-                                <img :src="props.user.profile_photo_url" :alt="`${props.user.name} profil fotoğrafı`"
+                                <img :src="props.user.profile_photo_url" :alt="`${formatDisplayName(props.user.name)} profil fotoğrafı`"
                                     class="w-full h-full object-cover">
                             </div>
                         </div>
@@ -560,9 +570,8 @@ onMounted(() => {
                     <!-- User Info -->
                     <div class="text-center mb-10">
                         <h1 class="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent mb-3">
-                            {{ props.user.name }}
+                            {{ formatDisplayName(props.user.name) }}
                         </h1>
-                        <p v-if="props.user.registration_number" class="text-blue-600 dark:text-blue-400 text-lg font-medium mb-4">Sicil No: {{ props.user.registration_number }}</p>
                         <p v-if="props.user.bio" class="text-gray-600 dark:text-gray-300 mt-5 leading-relaxed max-w-2xl mx-auto text-base">
                             {{ props.user.bio }}
                         </p>
@@ -895,7 +904,7 @@ onMounted(() => {
                     <!-- Footer -->
                     <div class="text-center mt-12 pt-8 border-t border-gray-200 dark:border-gray-700/50">
                         <p class="text-gray-500 dark:text-gray-400 text-sm font-medium">
-                              {{ props.user.name }}
+                            {{ formatDisplayName(props.user.name) }}
                         </p>
                     </div>
                 </div>

@@ -31,9 +31,7 @@ const submit = () => {
   <div class="min-h-screen flex flex-col md:flex-row">
     <!-- Sol taraf: Animasyon -->
     <div class="hidden md:flex md:w-1/2 items-center justify-center bg-gray-100 p-6">
-      <div class="text-center">
-        <div class="mt-4 text-2xl font-bold text-gray-800 dark:text-gray-100">Adana Barosu</div>
-      </div>
+        <img src="/main/adanabarosu.png" alt="Adana Barosu" class="max-w-full h-auto" />
     </div>
 
     <!-- Sağ taraf: Login formu -->
