@@ -31,14 +31,15 @@ const submit = () => {
   <div class="min-h-screen flex flex-col md:flex-row">
     <!-- Sol taraf: Animasyon -->
     <div class="hidden md:flex md:w-1/2 items-center justify-center bg-gray-100 p-6">
-      <!-- Buraya bir Lottie animasyon veya SVG yerleştirebilirsin -->
-      <img src="/main/adana.png" alt="Giriş" class="w-3/4 h-auto animate-fade-in" />
+      <div class="text-center">
+        <div class="mt-4 text-2xl font-bold text-gray-800 dark:text-gray-100">Adana Barosu</div>
+      </div>
     </div>
 
     <!-- Sağ taraf: Login formu -->
     <div class="w-full md:w-1/2 flex items-center justify-center p-6">
       <div class="w-full max-w-md space-y-6">
-        <h2 class="text-3xl font-bold text-center">Hesabınıza Giriş Yapın</h2>
+        <h2 class="text-3xl font-bold text-center">Adana Barosu NFC Kartvizit Sistemi</h2>
         <p class="text-sm text-muted-foreground text-center">Devam etmek için bilgilerinizi giriniz</p>
 
         <form @submit.prevent="submit" class="space-y-4">

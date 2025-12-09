@@ -35,6 +35,36 @@ const copyIban = async (iban: string) => {
     }
 };
 
+/**
+ * Telefon numarasını `tel:` linki için uluslararası formata çevirir.
+ * Örnek: "05551234567" -> "+905551234567"
+ * Gelen değer zaten "+905..." ise korunur.
+ */
+const formatTel = (raw?: string | null) => {
+    if (!raw) return '';
+    const trimmed = String(raw).trim();
+    const digits = trimmed.replace(/\D/g, '');
+
+    // Eğer kullanıcı '+' ile başlamışsa, sadece rakamları alıp tekrar '+' ekle
+    if (trimmed.startsWith('+')) {
+        return `+${digits}`;
+    }
+
+    // Eğer başında ülke kodu (90) varsa, + ekle
+    if (digits.startsWith('90')) {
+        return `+${digits}`;
+    }
+
+    // Eğer başında sıfır varsa, baştaki sıfırları kaldırıp +90 ekle
+    if (digits.startsWith('0')) {
+        const noZero = digits.replace(/^0+/, '');
+        return `+90${noZero}`;
+    }
+
+    // Diğer durumlarda direkt +90 ekle
+    return `+90${digits}`;
+};
+
 // Props
 const props = defineProps<{
     user: {
@@ -567,7 +597,7 @@ onMounted(() => {
                             </span>
                         </a>
 
-                        <a v-if="props.user.phone" :href="`tel:${props.user.phone}`"
+                        <a v-if="props.user.phone" :href="`tel:${formatTel(props.user.phone)}`"
                             class="group flex flex-col items-center p-4 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800/50 dark:to-gray-700/50 rounded-2xl hover:shadow-lg transition-all duration-300 hover:scale-110 border border-gray-200 dark:border-gray-600/30">
                             <div class="p-3 rounded-xl shadow-md group-hover:shadow-xl transition-all duration-300 bg-gradient-to-r from-green-500 to-emerald-600">
                                 <Phone class="w-5 h-5 text-white" />
