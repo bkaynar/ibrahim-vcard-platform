@@ -8,6 +8,8 @@ import { ref, watch } from 'vue';
 interface User {
     id: number;
     name: string;
+    username: string;
+    registration_number: string;
     email: string;
     roles: Array<{
         id: number;
@@ -120,10 +122,16 @@ const breadcrumbs: BreadcrumbItem[] = [
                         </thead>
                         <tbody>
                             <tr v-for="user in users.data" :key="user.id"
-                                class="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
+                                class="bg-white border-b dark:bg-gray-900 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
                                 <th scope="row"
-                                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    {{ user.name }}
+                                    class="px-6 py-4 font-medium whitespace-nowrap">
+                                    <Link :href="`/${user.registration_number}`"
+                                        class="text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors flex items-center gap-2 group">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                        </svg>
+                                        {{ user.name }}
+                                    </Link>
                                 </th>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     {{ user.email }}
@@ -135,6 +143,13 @@ const breadcrumbs: BreadcrumbItem[] = [
                                 </td>
                                 <td class="px-6 py-4 text-right">
                                     <div class="flex items-center justify-end gap-2">
+                                        <Link :href="`/${user.registration_number}`"
+                                            class="inline-flex items-center px-3 py-1.5 text-xs font-medium text-purple-600 bg-purple-50 rounded-lg hover:bg-purple-100 dark:bg-purple-900/20 dark:text-purple-400 dark:hover:bg-purple-900/40 transition-colors">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                        </svg>
+                                        Profil
+                                        </Link>
                                         <Link :href="route('admin.users.edit', user.id)"
                                             class="inline-flex items-center px-3 py-1.5 text-xs font-medium text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 dark:bg-blue-900/20 dark:text-blue-400 dark:hover:bg-blue-900/40 transition-colors">
                                         Düzenle

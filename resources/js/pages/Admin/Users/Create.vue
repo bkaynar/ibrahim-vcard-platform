@@ -12,6 +12,7 @@ const form = useForm({
     password: '',
     password_confirmation: '',
     phone: '',
+    registration_number: '',
     address: '',
     bio: '',
     profile_photo: null as File | null,
@@ -385,6 +386,29 @@ const submit = () => {
                                             clip-rule="evenodd" />
                                     </svg>
                                     {{ form.errors.phone }}
+                                </div>
+                            </div>
+
+                            <!-- Sicil Numarası -->
+                            <div class="space-y-2">
+                                <label for="registration_number" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                    Sicil Numarası
+                                </label>
+                                <div class="relative">
+                                    <FileText class="absolute left-3 top-3.5 h-5 w-5 text-gray-400" />
+                                    <input v-model="form.registration_number" type="text" id="registration_number" placeholder="Sicil numarasını giriniz"
+                                        class="block w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                                        :class="{
+                                            'border-red-300 focus:ring-red-500': form.errors.registration_number
+                                        }">
+                                </div>
+                                <div v-if="form.errors.registration_number" class="text-sm text-red-600 flex items-center mt-1">
+                                    <svg class="h-4 w-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                    {{ form.errors.registration_number }}
                                 </div>
                             </div>
                         </div>
